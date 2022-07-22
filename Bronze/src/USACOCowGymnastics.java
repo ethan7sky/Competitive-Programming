@@ -6,7 +6,7 @@ public class USACOCowGymnastics {
 	static BufferedReader in;
 	static PrintWriter out;
 	static int k, n, ans;
-	static String[] a, b;
+	static int[][] a;
 	
 	public static void main(String[] args) throws IOException{
 		
@@ -21,38 +21,38 @@ public class USACOCowGymnastics {
 		n = Integer.valueOf(st.nextToken());
 		
 		
-		a = new String[k];
-		for(int i = 0; i < k; i++) {
-			a[i] = in.readLine().replaceAll(" ", "");
-		}
+		a = new int[k][n];
 		
 		for(int i = 0; i < k; i++) {
+			st = new StringTokenizer(in.readLine());
 			for(int j = 0; j < n; j++) {
 				
+				a[i][Integer.valueOf(st.nextToken())-1] = j+1;
 			}
 		}
+		
+		
+		
+		
 		
 		//solve
-		for(int i = 1; i < n; i++) {
-			for(int j = i+1; j <= n; j++) {
+		for(int i = 0; i < n-1; i++) {
+			for(int j = i+1; j < n; j++) {
 				
-				boolean consistant = true;
-				int dis = a[0].indexOf(i+"") - a[0].indexOf(j+"");
-				
-				
+				int win = 0;
 				for(int l = 0; l < k; l++) {
-					if(dis * (a[l].indexOf(i+"") - a[l].indexOf(j+"")) < 0) {
-						consistant = false;
-						break;
-					}
+					if(a[l][i] < a[l][j]){ win++; }
 				}
-				if(consistant) {
+				
+				if(win == 0 || win == k) {
+					//System.out.println((i+1)+", "+(j+1));
 					ans++;
 				}
+				
 			}
 		}
 		
-		/*System.*/out.println(ans);
+		out.println(ans);
 		
 		in.close();
 		out.close();
