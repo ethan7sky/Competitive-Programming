@@ -15,7 +15,6 @@ public class USACOMilkMeasurment {
 	
 	public static void main(String[] args) throws IOException {
 		
-		
 		in = new BufferedReader(new FileReader("measurement.in"));
 		out = new PrintWriter("measurement.out");
 		
