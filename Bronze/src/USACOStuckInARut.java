@@ -54,12 +54,13 @@ public class USACOStuckInARut {
 			
 			if(d[i]=='E') {
 				if(x[i]>x[j] || y[i] < y[j]) continue;
-				if(dx>dy && check(j)>=dy) min = Math.min(min,  dx);
+				
+				if(dx>dy && check(j)>=dy) min = Math.min(min, dx);
 				
 			}
 			else {
 				if(x[i]<x[j] || y[i] > y[j]) continue;
-				if(dx<dy && check(j)>=dy) min = Math.min(min,  dy);
+				if(dx<dy && check(j)>=dx) min = Math.min(min, dy);
 				
 			}
 		}
