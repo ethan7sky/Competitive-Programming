@@ -41,7 +41,6 @@ public class USACOWhydidTheCowCrossTheRoad2 {
 		}
 		out.println(pairs/2);
 		
-		
 		in.close();
 		out.close();
 	}
