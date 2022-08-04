@@ -10,7 +10,7 @@ public class USACOTeamTicTacToe {
 	public static void main(String[] args) throws IOException{
 		
 		a = new char[3][];
-		//in = new Scanner(System.in);
+		
 		in = new Scanner(new FileReader("tttt.in"));
 		out = new PrintWriter("tttt.out");
 		
