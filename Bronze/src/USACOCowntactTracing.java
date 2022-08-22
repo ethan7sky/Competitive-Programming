@@ -6,9 +6,8 @@ public class USACOCowntactTracing {
 	static BufferedReader in;
 	static PrintWriter out;
 	static StringTokenizer st;
-	static int N, T, Y, Z;
+	static int N, T, Y, Z, state[];
 	static HashSet<Integer> X;
-	static int state[];
 	static interactions a[];
 	
 	public static void main(String[] args) throws IOException {
@@ -66,21 +65,21 @@ public class USACOCowntactTracing {
 					//we have two cows, a[k].x and a[k].y, who shook hands
 					//if 1 is infected, so is the other, but only if infected[a[k].x][1] < j
 					
-					int cow1 = a[k].x;
-					int cow2 = a[k].y;
+					int cow1 = a[k].x-1;
+					int cow2 = a[k].y-1;
 					
-					if(infected[cow1-1][0]==1||infected[cow2-1][0]==1) {
-						if(infected[cow1-1][0]==infected[cow2-1][0]) {
+					if(infected[cow1][0]==1||infected[cow2][0]==1) {
+						if(infected[cow1][0]==infected[cow2][0]) {
 							continue;
 						}
 						else {
-							if(infected[cow1-1][0]==1 && infected[cow1-1][1] < j) {
-								infected[cow1-1][1]++;
-								infected[cow2-1][0] = 1;
+							if(infected[cow1][0]==1 && infected[cow1][1] < j) {
+								infected[cow1][1]++;
+								infected[cow2][0] = 1;
 							}
-							else if(infected[cow2-1][0]==1 && infected[cow2-1][1] < j) {
-								infected[cow2-1][1]++;
-								infected[cow1-1][0] = 1;
+							else if(infected[cow2][0]==1 && infected[cow2][1] < j) {
+								infected[cow2][1]++;
+								infected[cow1][0] = 1;
 							}
 						}
 					}
