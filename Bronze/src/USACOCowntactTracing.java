@@ -12,15 +12,14 @@ public class USACOCowntactTracing {
 	
 	public static void main(String[] args) throws IOException {
 		
-		in = new BufferedReader(new InputStreamReader(System.in));
-		//in = new BufferedReader(new FileReader("tracing.in"));
-		//out = new PrintWriter("tracing.out");
+		in = new BufferedReader(new FileReader("tracing.in"));
+		out = new PrintWriter("tracing.out");
 		
 		init();
 		solve();
 		
-		//in.close();
-		//out.close();
+		in.close();
+		out.close();
 	}
 	
 	static void init() throws IOException {
@@ -50,27 +49,23 @@ public class USACOCowntactTracing {
 		Y = Integer.MAX_VALUE;
 		Z = -1;
 		
-		System.out.println(Arrays.toString(a));
-		System.out.println(Arrays.toString(state));
 		
-		//patient zero
 		for(int i = 0; i < N; i++) {
-			//value of K
+			
 			for(int j = 0; j <= T; j++) {
 				
 				int[][] infected = new int[N][2];
 				infected[i][0] = 1;
 				for(int k = 0; k < T; k++) {
 					
-					//we have two cows, a[k].x and a[k].y, who shook hands
-					//if 1 is infected, so is the other, but only if infected[a[k].x][1] < j
 					
 					int cow1 = a[k].x-1;
 					int cow2 = a[k].y-1;
 					
 					if(infected[cow1][0]==1||infected[cow2][0]==1) {
 						if(infected[cow1][0]==infected[cow2][0]) {
-							continue;
+							infected[cow1][1]++;
+							infected[cow2][1]++;
 						}
 						else {
 							if(infected[cow1][0]==1 && infected[cow1][1] < j) {
@@ -92,8 +87,6 @@ public class USACOCowntactTracing {
 						works = false;
 					}
 				}
-				System.out.println(Arrays.deepToString(infected) + " " + i+" "+j);
-				System.out.println(works);
 				if(works) {
 					X.add(i);
 					Y = Math.min(Y, j);
@@ -102,9 +95,9 @@ public class USACOCowntactTracing {
 			}
 		}
 		if(Z == T) {
-			System.out.println(X.size() + " " + Y + " Infinity");
+			out.println(X.size() + " " + Y + " Infinity");
 		}else {
-			System.out.println(X.size() + " " + Y + " " + Z);
+			out.println(X.size() + " " + Y + " " + Z);
 		}
 	}
 	
