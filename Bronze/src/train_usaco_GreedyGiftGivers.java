@@ -7,7 +7,7 @@ PROB: gift1
 import java.util.*;
 import java.io.*;
 
-public class gift1 {
+public class train_usaco_GreedyGiftGivers {
 	
 	static Scanner in;
 	static PrintWriter out;

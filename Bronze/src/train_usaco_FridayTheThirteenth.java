@@ -6,7 +6,7 @@ PROB: friday
 
 import java.util.*; import java.io.*;
 
-public class friday {
+public class train_usaco_FridayTheThirteenth {
 	
 	static Scanner in;
 	static PrintWriter out;

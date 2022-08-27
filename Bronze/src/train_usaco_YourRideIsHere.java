@@ -7,7 +7,7 @@ PROB: ride
 import java.util.*;
 import java.io.*;
 
-public class ride {
+public class train_usaco_YourRideIsHere {
 	
 	static Scanner in;
 	static PrintWriter out;
