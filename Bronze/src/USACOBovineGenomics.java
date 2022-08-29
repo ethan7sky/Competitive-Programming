@@ -10,8 +10,7 @@ public class USACOBovineGenomics {
 	static String a[], b[];
 	
 	public static void main(String[] args) throws IOException {
-		
-		//in = new BufferedReader(new InputStreamReader(System.in));
+	
 		in = new BufferedReader(new FileReader("cownomics.in"));
 		out = new PrintWriter("cownomics.out");
 		
@@ -37,23 +36,15 @@ public class USACOBovineGenomics {
 			b[i] = in.readLine();
 		}
 	}
+	
 	static void solve() {
 		
 		for(int i = 0; i < m; i++) {
 			
-			char[] a1 = new char[n];
-			char[] b1 = new char[n];
-			
-			for(int j = 0; j < n; j++) {
-				a1[j] = a[j].charAt(i);
-				b1[j] = b[j].charAt(i);
-			}
-			
-			//position = i
 			boolean flag = true;
 			for(int j = 0; j < n; j++) {
 				for(int k = 0; k < n; k++) {
-					if(a1[j] == b1[k] || b1[j] == a1[k]) {
+					if(a[j].charAt(i) == b[k].charAt(i)) {
 						flag = false;
 						break;
 					}

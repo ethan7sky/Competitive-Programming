@@ -35,9 +35,7 @@ public class USACOLoadBalancing_silver {
 		if(xavg%2==1) xavg--;
 		if(yavg%2==1) yavg--;
 		
-		ans = Integer.MAX_VALUE;
-		
-		ans = Math.min(ans, solve(xavg, yavg));
+		ans = solve(xavg, yavg);
 		System.out.println(ans);
 		
 		

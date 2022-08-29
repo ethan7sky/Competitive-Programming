@@ -9,7 +9,7 @@ public class USACOModernArt {
 	static PrintWriter out;
 	
 	public static void main(String[] args) throws IOException {
-		//in = new Scanner(System.in);
+		
 		in = new Scanner(new FileReader("art.in"));
 		out = new PrintWriter("art.out");
 		
