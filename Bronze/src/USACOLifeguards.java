@@ -5,7 +5,7 @@ public class USACOLifeguards {
 	
 	static BufferedReader in;
 	static PrintWriter out;
-	static int a[][], n;
+	static int a[][], n, max;
 	static boolean[] b;
 	
 	public static void main(String[] args) throws IOException {
@@ -21,7 +21,7 @@ public class USACOLifeguards {
 			a[i][1] = Integer.valueOf(st.nextToken());
 		}
 		
-		int max = 0;
+		max = 0;
 		
 		for(int i = 0; i < n; i++) {
 

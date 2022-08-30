@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class CF_TwoTables {
+public class CFTwoTables {
   
 	static BufferedReader in;
 	static StringBuilder sb;

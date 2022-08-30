@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class CFWhiteSheet_in_class {
+public class CFWhiteSheet2 {
 	
 	static Scanner in;
 	static point a,b,c;

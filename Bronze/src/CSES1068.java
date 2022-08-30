@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class CSES1068WeirdAlgorithm {
+public class CSES1068 {
 	
 	static BufferedReader in;
 	static StringTokenizer st;
