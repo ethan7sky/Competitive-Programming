@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;  
 
-public class bucketbrigade {
+public class USACOBucketBrigade {
 	
 	static int barnx, barny, lakex, lakey, rockx, rocky;
 	static Scanner in;
