@@ -3,12 +3,12 @@ import java.io.*;
 
 public class USACOContaminatedMilk {
 	
-	static int N, M, D, S, sick[][], badmilk[], max;
-	static boolean overlap[];
-	static milk a[];
 	static BufferedReader in;
 	static StringTokenizer st;
 	static PrintWriter out;
+	static int N, M, D, S, max;
+	static boolean badmilk[], data[][];
+	static milk a[];
 	
 	public static void main(String[] args) throws IOException{
 		
@@ -22,44 +22,6 @@ public class USACOContaminatedMilk {
 		out.close();
 	}
 	
-	static void solve() {
-
-		badmilk = new int[M];
-		for(int i = 0; i < S; i++) {
-
-			overlap = new boolean[M];
-			for(int j = 0; j < D; j++) {
-				if(sick[i][0] == a[j].p && sick[i][1] > a[j].t) {
-					if(overlap[a[j].m-1] == false) {
-						badmilk[a[j].m -1]++;
-						overlap[a[j].m-1] = true;
-					}
-				}
-			}
-		}
-		
-		max = 0;
-		for(int i = 0; i < M; i++) {
-			if(badmilk[i] == S) {
-				
-				overlap = new boolean[N];
-				int milktype = i+1;
-				int cnt = 0;
-				for(int j = 0; j < D; j++) {
-					if(a[j].m == milktype) {
-						if(overlap[a[j].p-1] == false) {
-							cnt++;
-							overlap[a[j].p-1] = true;
-						}
-					}
-				}
-				max = Math.max(cnt, max);
-			}
-		}
-		out.println(max);
-		
-	}
-	
 	static void init() throws IOException {
 		
 		st = new StringTokenizer(in.readLine());
@@ -68,28 +30,58 @@ public class USACOContaminatedMilk {
 		D = Integer.parseInt(st.nextToken());
 		S = Integer.parseInt(st.nextToken());
 		
-		a = new milk[D];
+		a = new milk[D+S];
 		for(int i = 0; i < D; i++) {
 			st = new StringTokenizer(in.readLine());
-			a[i] = new milk(Integer.parseInt(st.nextToken()),
-					Integer.parseInt(st.nextToken()),
-					Integer.parseInt(st.nextToken()));
+			a[i] = new milk(Integer.parseInt(st.nextToken())-1,Integer.parseInt(st.nextToken())-1,Integer.parseInt(st.nextToken()));
 		}
-		
-		
+		for(int i = D; i < D+S; i++) {
+			st = new StringTokenizer(in.readLine());
+			a[i] = new milk(Integer.parseInt(st.nextToken())-1, -1, Integer.parseInt(st.nextToken()));
+		}
 		Arrays.sort(a);
 		
-		sick = new int[S][2];
-		for(int i = 0; i < S; i++) {
-			st = new StringTokenizer(in.readLine());
-			sick[i][0] = Integer.parseInt(st.nextToken());
-			sick[i][1] = Integer.parseInt(st.nextToken());
-		}
+		badmilk = new boolean[M];
+		data = new boolean[N][M];
 		
 	}
-
-	static class milk implements Comparable<milk>{
+	
+	static void solve() {
 		
+		Arrays.fill(badmilk, true);
+		for(milk t: a) {
+			if(t.m == -1) {
+				for(int i = 0; i < M; i++) {
+					badmilk[i] = badmilk[i]&&data[t.p][i];
+				}
+			}
+			else {
+				data[t.p][t.m] = true;
+			}
+		}
+		
+		for(int i = 0; i < M; i++) {
+			
+			if(badmilk[i]) {
+				int cnt = 0;
+				for(int j = 0; j < N; j++) {
+					if(data[j][i]) cnt++;
+				}
+				
+				max = Math.max(max, cnt);
+			}
+		}
+		
+		out.println(max);
+	}
+	
+	
+	
+	
+	
+	
+	static class milk implements Comparable<milk> {
+
 		int p, m, t;
 		milk(int a, int b, int c){
 			p = a;
@@ -100,14 +92,16 @@ public class USACOContaminatedMilk {
 		public String toString() {
 			return p+" "+m+" "+t;
 		}
-
+		
 		@Override
 		public int compareTo(USACOContaminatedMilk.milk o) {
-			
-			return o.t-this.t;
+			if(this.t == o.t) {
+				return this.m-o.m;
+			}
+			return this.t-o.t;
 		}
 		
+		
 	}
-	
 	
 }

@@ -1,42 +1,36 @@
+import java.io.*;
 import java.util.*;
 
-import java.io.*;
-public class TEST {
+public class USACOLivestockLineup {
 	
-	public static void main(String[] args) {
+	for(int i = 0; i < n; i++) {
 		
-		Scanner in = new Scanner(System.in);
-		int n = in.nextInt();
-		int m = in.nextInt();
-		int k = in.nextInt();
-		in.nextLine();
-		String line  = in.nextLine();
-		stuff a[] = new stuff[k];
-		for(int i = 0; i < k; i++) {
-			a[i] = new stuff(in.nextInt(), in.nextInt());
+		sum = -1;
+		
+		int minl = bales[i];
+		int radius = 1;
+		for(int j = i; j >= 0; j--) {
+			if(bales[j] >= minl) {
+				sum++;
+				minl = Math.min(bales[j]-radius, minl);
+				radius++;
+				
+			}
 		}
-		Arrays.sort(a);
 		
-		System.out.println(line);
-		System.out.println(Arrays.toString(a));
+		int maxr = bales[i];
+		radius = 1;
+		for(int j = i; j < n; j++) {
+			if(bales[j] <= maxr) {
+				sum++;
+				maxr = Math.max(bales[j]+radius, maxr);
+				radius++;
+				
+			}
+		}
+		
+		max = Math.max(max, sum);
 	}
-	
-	static class stuff implements Comparable<stuff>{
-		
-		int t, x;
-		stuff(int a, int b){
-			t = a;
-			x = b;
-		}
-		
-		public String toString() {
-			return t+" "+x;
-		}
+	System.out.println(max);
 
-		@Override
-		public int compareTo(TEST.stuff o) {
-			// TODO Auto-generated method stub
-			return this.x-o.x;
-		}
-	}
 }
