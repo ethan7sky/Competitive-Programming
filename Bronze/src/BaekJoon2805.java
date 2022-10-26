@@ -1,7 +1,7 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class USACOAngryCows_silver {
+public class BaekJoon2805 {
 	
 	static BufferedReader in;
 	static PrintWriter out;
@@ -10,14 +10,12 @@ public class USACOAngryCows_silver {
 	
 	public static void main(String[] args) throws IOException {
 		
-		in = new BufferedReader(new FileReader("angry.in"));
-		out = new PrintWriter("angry.out");
+		in = new BufferedReader(new InputStreamReader(System.in));
 		
 		init();
 		solve();
 		
 		in.close();
-		out.close();
 		
 	}
 	static void init() throws IOException {
@@ -26,8 +24,9 @@ public class USACOAngryCows_silver {
 		k = Integer.parseInt(st.nextToken());
 		
 		a = new int[n];
+		st = new StringTokenizer(in.readLine());
 		for(int i = 0; i < n; i++) {
-			a[i] = Integer.parseInt(in.readLine());
+			a[i] = Integer.parseInt(st.nextToken());
 		}
 		
 		Arrays.sort(a);
@@ -35,8 +34,8 @@ public class USACOAngryCows_silver {
 	
 	static void solve() {
 		
-		int low = 0; //first, we set a lowest possible value for the power
-		int high = 500000000; //this is the highest possible value for the power
+		int low = 0; 
+		int high = 1000000000; 
 		int mid = 0, ans = 0;
 		
 		while(low <= high){
@@ -45,25 +44,20 @@ public class USACOAngryCows_silver {
 			
 			if(check(mid)) {
 				ans = mid;
-				high = mid-1;
-			}
-			else {
-				
 				low = mid+1;
 			}
+			else {
+				high = mid-1;
+			}
 		}
-		out.println(ans);
+		System.out.println(ans);
 	}
 	static boolean check(int m) {
 		
-		int cow = 1;
-		int start = a[0];
+		long total = 0;
 		for(int i = 0; i <n; i++) {
-			if(a[i]-start > m*2) {
-				cow++;
-				start = a[i];
-			}
+			total += Math.max(0, a[i]-m);
 		}
-		return cow <= k;
+		return total >= k;
 	}
 }

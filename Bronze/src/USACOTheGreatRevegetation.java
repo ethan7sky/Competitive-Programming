@@ -2,71 +2,80 @@ import java.util.*; import java.io.*;
 
 public class USACOTheGreatRevegetation {
 	
-	static int n, m, a[][], res[];
+	static int n, m, types[];
+	static boolean a[][];
 	static String ans;
 	static BufferedReader in;
-	static PrintWriter out;
 	static StringTokenizer st;
-	static boolean no[][], nope[];
+	static PrintWriter out;
 	
 	public static void main(String[] args) throws IOException {
 		
 		in = new BufferedReader(new FileReader("revegetate.in"));
 		out = new PrintWriter("revegetate.out");
+		//in = new BufferedReader(new InputStreamReader(System.in));
 		
 		init();
 		solve();
-		out.println(ans);
 		
 		in.close();
 		out.close();
+		
 	}
+	
 	static void init() throws IOException {
+		
 		st = new StringTokenizer(in.readLine());
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
 		
-		a = new int[m][2];
+		a = new boolean[n][n];
 		for(int i = 0; i < m; i++) {
 			st = new StringTokenizer(in.readLine());
-			a[i][0] = Integer.parseInt(st.nextToken());
-			a[i][1] = Integer.parseInt(st.nextToken());
+			int i1 = Integer.parseInt(st.nextToken());
+			int i2 = Integer.parseInt(st.nextToken());
+			
+			a[i1-1][i2-1] = true;
+			a[i2-1][i1-1] = true;
 		}
 		
-		no = new boolean[n][n];
-		for(int i = 0; i < m; i++) {
-			no[a[i][0]-1][a[i][1]-1] = true;
-			no[a[i][1]-1][a[i][0]-1] = true;
-		}
+		types = new int[n];
+		Arrays.fill(types, 0);
 		
-		res = new int[n];
-		Arrays.fill(res, 0);
-
+		System.out.println(Arrays.deepToString(a));
+	
 	}
+	
 	static void solve() {
 		
-		for(int i = 0; i < n; i++) { // current pasture
-			nope = no[i];
-			String contains = "";
-			for(int j = 0; j < nope.length; j++) { // different pastures
-				if(nope[j]) {
-					contains += res[j];
+		for(int i = 0; i < n; i++) {
+			
+			boolean[] no = a[i];
+			String notavailable = "";
+			for(int j = 0; j < no.length; j++) {
+				if(no[j]) {
+					notavailable += types[j];
 				}
 			}
 			
+			System.out.println(notavailable);
+			
 			int available = 1;
 			while(true) {
-				if(!contains.contains(available+"")) {
-					res[i] = available;
+				if(!notavailable.contains(available+"")) {
+					types[i] = available;
 					break;
 				}
 				available++;
 			}
 		}
 		
-		ans="";
+		ans = "";
 		for(int i = 0; i < n; i++) {
-			ans+=res[i];
+			ans += types[i];
 		}
+		
+		out.println(ans);
 	}
+	
 }
