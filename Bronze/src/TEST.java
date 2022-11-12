@@ -1,72 +1,76 @@
-import java.util.*; import java.io.*;
+import java.util.*;
+import java.io.*;
 
-public class USACOTheGreatRevegetation {
+public class USACOAirCownditioning {
 	
-	static int n, m, a[][], res[];
-	static String ans;
-	static BufferedReader in;
-	static PrintWriter out;
-	static StringTokenizer st;
-	static boolean no[][], nope[];
-	
-	public static void main(String[] args) throws IOException {
-		
-		in = new BufferedReader(new FileReader("revegetate.in"));
-		out = new PrintWriter("revegetate.out");
+	static Scanner in;
+	static int n, a[], ans;
+  	static ArrayList<Integer> up, dn;
+  
+	public static void main(String[] args) {
+		in = new Scanner(System.in);
 		
 		init();
-		solve();
-		out.println(ans);
-		
-		in.close();
-		out.close();
 	}
-	static void init() throws IOException {
-		st = new StringTokenizer(in.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
-		
-		a = new int[m][2];
-		for(int i = 0; i < m; i++) {
-			st = new StringTokenizer(in.readLine());
-			a[i][0] = Integer.parseInt(st.nextToken());
-			a[i][1] = Integer.parseInt(st.nextToken());
-		}
-		
-		no = new boolean[n][n];
-		for(int i = 0; i < m; i++) {
-			no[a[i][0]-1][a[i][1]-1] = true;
-			no[a[i][1]-1][a[i][0]-1] = true;
-		}
-		
-		res = new int[n];
-		Arrays.fill(res, 0);
-
-	}
-	static void solve() {
-		
-		for(int i = 0; i < n; i++) { // current pasture
-			nope = no[i];
-			String contains = "";
-			for(int j = 0; j < nope.length; j++) { // different pastures
-				if(nope[j]) {
-					contains += res[j];
-				}
-			}
-			
-			int available = 1;
-			while(true) {
-				if(!contains.contains(available+"")) {
-					res[i] = available;
-					break;
-				}
-				available++;
-			}
-		}
-		
-		ans="";
-		for(int i = 0; i < n; i++) {
-			ans+=res[i];
-		}
-	}
+  
+  	static void init(){
+      	n = in.nextInt();
+      	a = new int[n];
+      	for(int i=0; i<n; i++) a[i] = in.nextInt();
+      	
+      	up = new ArrayList<Integer>();
+      	dn = new ArrayList<Integer>();
+      
+      	for(int i=0; i<n; i++){
+          
+          	int df = a[i] - in.nextInt();
+          	
+          	if(df > 0) { dn.add(df); up.add(0);}
+          	else if(df < 0) { dn.add(0); up.add(-df);}
+          	else { dn.add(0); up.add(0); } 
+        }
+      	
+      //	System.out.println(dn);
+      //	System.out.println(up);
+      	
+        solve(dn);
+      	solve(up);
+        
+      	
+      	System.out.println(ans);
+    }
+  	
+  	static void solve(ArrayList<Integer> list) {
+  		
+  		if(list.size() == 0) return;
+  		
+  		int min = list.get(0);
+  		for(int i=0; i<list.size(); i++) {
+  			min = Math.min(min, list.get(i));
+  		}
+  		
+  		ans += min;
+  		
+  		for(int i=0; i<list.size(); i++) {
+  			list.set(i, list.get(i)-min);
+  		}
+  		
+  		ArrayList<Integer> temp = new ArrayList<Integer>();
+  		for(int i=0; i<list.size(); i++) {
+  			if(list.get(i) == 0) {
+  				solve(temp);
+  				temp.clear();
+  			}
+  			else temp.add(list.get(i));
+  		}
+  		
+  		solve(temp);
+  		
+  	}
 }
+
+/*
+10
+6 10 6 2 1 4 0 6 3 1
+8 7 5 3 7 4 9 10 2 0
+*/

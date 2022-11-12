@@ -4,7 +4,9 @@ import java.io.*;
 public class USACOModernArt {
 	
 	static int n, ans;
-	static char canvas[][], colors[];
+	static char canvas[][];
+	static HashSet<Character> colors;
+	static boolean[] works;
 	static Scanner in;
 	static PrintWriter out;
 	
@@ -18,55 +20,60 @@ public class USACOModernArt {
 		
 		in.close();
 		out.close();
-		
+	
 	}
 	
-	static void init() {
-		n = in.nextInt(); in.nextLine();
+	static void init() throws IOException {
 		
-		canvas = new char[n][n];
-		for(int i = 0; i < n; i++) {
-			String temp = in.nextLine();
-			for(int j = 0; j < n; j++) {
-				canvas[i][j] = temp.charAt(j);
+		n = Integer.parseInt(in.nextLine());
+		
+		canvas = new char[n][];
+		for(int i=0; i<n; i++) {
+			canvas[i] = in.nextLine().toCharArray();
+		}
+		
+		colors = new HashSet<Character>();
+		for(int i=0; i<n; i++) {
+			for(int j=0; j<n; j++) {
+				colors.add(canvas[i][j]);
 			}
 		}
+		colors.remove('0');
+		
+		works = new boolean[9];
+		for(char i: colors) works[i-'0'-1] = true;
 	}
 	
 	static void solve() {
 		
-		colors = findcolors();
-		
-		for(int i = 0; i < colors.length; i++) {
+		for(char i: colors) {
 			
-			boolean first = true;
+			HashSet<Integer> inside = overlap(i);
 			
-			for(int j = 0; j < colors.length; j++) {
-				if(i==j) continue;
-				if(over(colors[i], colors[j])) {
-					first=false;
-					break;
-				}
-			}
-			if(first) {
-				ans++;			
+			for(int j: inside) {
+				works[j-1] = false;
 			}
 		}
 		
+		ans = 0;
+		for(int i=0; i<9; i++) {
+			if(works[i]) ans++;
+		}
 		out.println(ans);
-		
 	}
 	
-	static boolean over(char a, char b) {
+	static HashSet<Integer> overlap(char a){
 		
-		int l = 11;
-		int r = -1;
-		int u = -1;
-		int d = 11;
+		HashSet<Integer> inside = new HashSet<Integer>();
 		
-		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < n; j++) {
-				if(canvas[i][j] == b) {
+		int l = 9;
+		int r = 0;
+		int u = 0;
+		int d = 9;
+		
+		for(int i=0; i<n; i++) {
+			for(int j=0; j<n; j++) {
+				if(canvas[i][j] == a) {
 					l = Math.min(l, j);
 					r = Math.max(r, j);
 					u = Math.max(u, i);
@@ -74,34 +81,13 @@ public class USACOModernArt {
 				}
 			}
 		}
-		for(int i = d; i <= u; i++) {
-			for(int j = l; j <= r; j++) {
-				if(canvas[i][j] == a) return true;
+		for(int i=d; i<=u; i++) {
+			for(int j=l; j<=r; j++){
+				inside.add(canvas[i][j]-'0');
 			}
 		}
-		return false;
+		inside.remove(a-'0');
+		return inside;
 	}
 	
-	static char[] findcolors() {
-		
-		HashSet<Character> hs = new HashSet<Character>();
-		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < n; j++) {
-				hs.add(canvas[i][j]);
-			}
-		}
-
-		char[] colors = new char[hs.size()-1];
-		if(!hs.contains('0')) {
-			colors = new char[hs.size()];
-		}
-		int idx = 0;
-		for(char c: hs) {
-			if(c == '0') continue;
-			colors[idx] = c;
-			idx++;
-		}
-		
-		return colors;
-	}
 }

@@ -65,7 +65,7 @@ public class USACOMilkFactory {
 			String[] c = map.get(curr).split("-");
 			
 			for(int i=0; i<c.length; i++) {
-				if(hs.contains(c[i])) {
+				if(hs.contains(Integer.parseInt(c[i]))) {
 					break;
 				}
 				HashSet<Integer> hs2 = hs;
