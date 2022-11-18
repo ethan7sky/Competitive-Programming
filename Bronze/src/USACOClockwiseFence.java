@@ -48,9 +48,9 @@ public class USACOClockwiseFence {
 		map.put("SE", 'l');
 		map.put("WN", 'r');
 		map.put("WS", 'l');
-		map.put("NN", 'z');
-		map.put("SS", 'z');
-		map.put("EE", 'z');
-		map.put("WW", 'z');
+		map.put("NN", '_');
+		map.put("SS", '_');
+		map.put("EE", '_');
+		map.put("WW", '_');
 	}
 }

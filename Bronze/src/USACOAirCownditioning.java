@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class USACOAirCownditioning {
-	
+	 
 	static Scanner in;
 	static int n, a[], ans;
 	static ArrayList<Integer> increasing, decreasing;
