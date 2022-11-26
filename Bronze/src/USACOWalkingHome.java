@@ -39,11 +39,9 @@ public class USACOWalkingHome {
 	static void solve(int x, int y, char dir, int log) {
 		
 		if(x>=n || y>=n || a[x][y] || log > k) return;
-		if(x==n-1 && y==n-1) {
-			cnt++;
-		}
+		if(x==n-1 && y==n-1) cnt++;
 		else {
-			if(dir=='r') {
+			if(dir == 'r') {
 				solve(x+1, y, 'r', log);
 				solve(x, y+1, 'd', log+1);
 			}

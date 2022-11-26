@@ -2,62 +2,78 @@ import java.util.*;
 import java.io.*;
 
 public class USACOYearOfTheCow {
+
+	static Scanner in;
+	static int n;
+	static String[] ani = {"Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig", "Rat"};
+	static HashMap<String, Integer> zodiac;
+	static HashMap<String, pair> cow;
 	
-	static BufferedReader in;
-	static StringTokenizer st;
-	static HashMap<String, Integer> calendar;
-	static int n, cnt, prev, cow1, cow2, next, year;
+	static class pair{
+		int idx;
+		String animal;
+		
+		pair(int i, String a){
+			idx = i;
+			animal = a;
+		}
+		
+		public String toString() {
+			return idx +" "+animal;
+		}
+	}
 	
 	public static void main(String[] args) throws IOException {
-		
-		in = new BufferedReader(new InputStreamReader(System.in));
+
+		in = new Scanner(System.in);
 		init();
-		solve();
-		
+		in.close();
 	}
-	
-	static void solve() throws IOException {
-		
-		cnt=0; prev = 13;
-		for(int i=0; i<n; i++) {
-			
-			
-			
-		}
-		
-	}
-	
+
 	static void init() throws IOException {
 		
-		calendar = new HashMap<String, Integer>();
-		calendar.put("Ox", 1);
-		calendar.put("Tiger", 2);
-		calendar.put("Rabbit", 3);
-		calendar.put("Dragon", 4);
-		calendar.put("Snake", 5);
-		calendar.put("Horse", 6);
-		calendar.put("Goat", 7);
-		calendar.put("Monkey", 8);
-		calendar.put("Rooster", 9);
-		calendar.put("Dog", 10);
-		calendar.put("Pig", 11);
-		calendar.put("Rat", 12);
+		n = in.nextInt(); in.nextLine();
 		
-		n = Integer.parseInt(in.readLine());
+		zodiac = new HashMap<String, Integer>();
+	
+		for(int i=0; i<12; i++) zodiac.put(ani[i], i);
 		
-		for(int i=0; i<n; i++) {
-			
-			st = new StringTokenizer(in.readLine());
-			
-			String cow1 = st.nextToken();
-			st.nextToken(); st.nextToken();
-			boolean next = st.nextToken().equals("next");
-			String year = st.nextToken();
-			st.nextToken();
-			String cow2 = st.nextToken();
-			
-			
-			
-		}
+		cow = new HashMap<String, pair>();
+		cow.put("Bessie", new pair(0, "Ox"));
+		
+		
+		for(int i=0; i<n; i++) solve();
+		
+		System.out.println(Math.abs(cow.get("Elsie").idx));
 	}
+	
+	static void solve() {
+		
+		String s[] = in.nextLine().split(" ");
+		
+		String to = s[0];
+		String from = s[7];
+		String status = s[3];
+		String toAni = s[4];
+		String fromAni = cow.get(from).animal;
+		
+		int d = 0;
+		
+		if(status.equals("previous")) {
+			
+			if(zodiac.get(toAni) < zodiac.get(fromAni))
+				d = zodiac.get(fromAni) - zodiac.get(toAni);
+			else d = (zodiac.get(fromAni) - zodiac.get(toAni)) + 12;
+		}
+		else {
+			if(zodiac.get(fromAni) < zodiac.get(toAni))
+				d = zodiac.get(fromAni) - zodiac.get(toAni);
+			else d = (zodiac.get(fromAni) - zodiac.get(toAni)) - 12;
+		}
+		
+		int idx = cow.get(from).idx + d;
+		
+		cow.put(to, new pair(idx,toAni));
+		//System.out.println(cow);
+	}	
 }
