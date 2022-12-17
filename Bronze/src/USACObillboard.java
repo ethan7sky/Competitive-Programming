@@ -5,11 +5,14 @@ public class USACObillboard {
 	
 	
 	static Scanner in;
+	static PrintWriter out;
 	static boolean a[][];
 	static int x1, y1, x2, y2, cnt;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
+		//in = new Scanner(new FileReader("billboard.in"));
+		//out = new PrintWriter("billboard.out");
 		in = new Scanner(System.in);
 		init();
 		
