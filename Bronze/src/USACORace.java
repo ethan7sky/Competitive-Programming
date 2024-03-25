@@ -60,7 +60,6 @@ public class USACORace {
 						dist+=speed;
 						secs++;
 					}
-					
 				}
 				
 				//System.out.println(dist+" "+speed+" "+secs);

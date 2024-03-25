@@ -38,7 +38,6 @@ public class USACOStuckInARut_silver {
 			public int compare(USACOStuckInARut_silver.cows o1, USACOStuckInARut_silver.cows o2) {
 				return o1.y-o2.y;
 			}
-			
 		});
 		Collections.sort(N, new Comparator<cows>() {
 			@Override

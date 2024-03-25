@@ -15,7 +15,7 @@ public class USACOLoadBalancing {
 		
 		st = new StringTokenizer(in.readLine());
 		n = Integer.valueOf(st.nextToken());
-		b = Integer.valueOf(st.nextToken());
+		//b = Integer.valueOf(st.nextToken());
 		
 		x = new int[n];
 		y = new int[n];
@@ -25,7 +25,7 @@ public class USACOLoadBalancing {
 			y[i] = Integer.valueOf(st.nextToken());
 		}
 		
-		int ans = 100;
+		int ans = 1000;
 		
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < n; j++) {
