@@ -3,6 +3,10 @@ import java.io.*;
 
 public class MathStuff {
 	
+	public static void main(String[] args) {
+		System.out.println(gcd(100001, 101101));
+	}
+	
 	
 	//gcd
 	static int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }

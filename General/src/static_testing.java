@@ -3,6 +3,33 @@ import java.io.*;
 
 public class static_testing {
 	
+	static int fibonacci(int n) {
+		if(n==0||n==1) return n;
+		return fibonacci(n-1) + fibonacci(n-2);
+	}
+	
+	public static int sum(int start, int end) {
+		if(end > start) {
+			return end + sum(start, end-1);
+		}
+		else {
+			return end;
+		}
+	}
+	
+	public static int infiniteRecursion() {
+		return infiniteRecursion();
+	}
+	
+	public static int sum(int k) {
+		if (k>0) {
+			return k+ sum(k-1);
+		}
+		else {
+			return 0;
+		}
+	}
+	
 	static {
 		System.out.println("will run main now!");
 	}
