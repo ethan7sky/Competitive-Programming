@@ -23,8 +23,8 @@ public class UnionFind {
 	public int find(int p) {
 		
 		int root = p;
-		while(root != parent[p]) {
-			root = parent[p];
+		while(root != parent[root]) {
+			root = parent[root];
 		}
 		
 		while(p!=root) {

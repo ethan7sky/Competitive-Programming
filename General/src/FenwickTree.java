@@ -61,7 +61,7 @@ public class FenwickTree {
 				idx += idx&-idx;
 			}
 		}
-	}	
+	}
 	
 
 }

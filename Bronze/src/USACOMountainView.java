@@ -39,7 +39,7 @@ public class USACOMountainView {
 			int currx = x[i];
 			int curry = y[i];
 			
-			Boolean view = true;
+			boolean view = true;
 			for(int j=0; j<n; j++) {
 				if(j==i) continue;
 				if(y[j]-curry>=Math.abs(x[j]-currx)) {

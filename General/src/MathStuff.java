@@ -31,4 +31,27 @@ public class MathStuff {
 	    }
 	    return primeNumbers;
 	}
+	
+	static int MOD = (int)1e9+7;
+	
+	//mod inverse
+	static long modInverse(long a) {
+		long m = MOD;
+		long y = 0, x = 1;
+		
+		long q, t;
+		while(a>1) {
+			q = a/m;
+			t = m;
+			m = a%m;
+			a=t;
+			t=y;
+			
+			y = x-q*y;
+			x=t;
+		}
+		if(x<0) x += MOD;
+		
+		return x;
+	}
 }
