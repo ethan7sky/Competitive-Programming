@@ -3,95 +3,37 @@ import java.io.*;
 
 public class CF539825C {
 	
-	static int MOD = 998244353;
-	static int MAX_N = (int)1e6+1;
-	static long inverse[] = new long[MAX_N];
-	static int t, n, xorCnt;
-	static String a, b;
-	static coefficients[] dp;
+	static long MOD = (long)1e9+7;
+	static int MAX_N = 2000+1;
+	static long inv = 500000004;
+	static int t, n, m, k;
+	static long dp[][];
 	static BufferedReader in;
+	static StringTokenizer st;
 	static StringBuilder sb;
 	
 	public static void main(String[] args) throws IOException {
 		in = new BufferedReader(new InputStreamReader(System.in));
 		
-		for(int i=1; i<MAX_N; i++) {
-			inverse[i] = modInverse(i);
-		}
+		sb = new StringBuilder();
 		
 		t = Integer.parseInt(in.readLine());
 		while(t-->0) {
-			n = Integer.parseInt(in.readLine());
+			st = new StringTokenizer(in.readLine());
+			n = Integer.parseInt(st.nextToken());
+			m = Integer.parseInt(st.nextToken());
+			k = Integer.parseInt(st.nextToken());
 			
-			dp = new coefficients[n+1];
-			
-			dp[n] = new coefficients(1, 0);
-			dp[n-1] = new coefficients(1, -1);
-			
-			for(int k=n-2; k>=0; k--) {
-				long a = dp[k+2].xterm;
-				long b = dp[k+2].cterm;
-				long c = dp[k+1].xterm;
-				long d = dp[k+1].cterm;
-				long xcoef = (long)n*c%MOD+MOD-(long)(n-k-1)*a%MOD;
-				xcoef %= MOD;
-				long constant = (long)n*d%MOD+MOD-(long)(n-k-1)*b%MOD;
-				constant -= n;
-				constant %= MOD;
-				xcoef = (xcoef*inverse[k+1])%MOD;
-				constant = (constant*inverse[k+1])%MOD;
-				dp[k] = new coefficients(xcoef, constant);
+			dp = new long[n+1][n+1];
+			for(int i=0; i<=n; i++) {
+				dp[i][0] = 0;
+				dp[i][i] = ((long)i*k)%MOD;
+				for(int j=1; j<i; j++) {
+					dp[i][j] = (((dp[i-1][j-1]+dp[i-1][j])%MOD)*inv)%MOD;
+				}
 			}
 			
-			//System.out.println(Arrays.toString(dp));
-			
-			
-			long x = ((MOD-dp[0].cterm)*modInverse(dp[0].xterm))%MOD;
-			
-			a = in.readLine();
-			b = in.readLine();
-			xorCnt=0;
-			for(int i=0; i<n; i++) {
-				if(a.charAt(i)!=b.charAt(i)) xorCnt++;
-			}
-			//System.out.println(xorCnt);
-			
-			long ans = ((dp[xorCnt].xterm*x)+dp[xorCnt].cterm)%MOD;
-			//while(ans<0) ans += MOD;
-			System.out.println(ans);
-			
+			System.out.println(dp[n][m]);
 		}
-	}
-	
-	static class coefficients {
-		long xterm, cterm;
-		public coefficients(long a, long b) {
-			this.xterm = a;
-			this.cterm = b;
-		}
-		public String toString() {
-			return xterm+" "+cterm;
-		}
-	}
-	
-	
-	static long modInverse(long a) {
-		long m = MOD;
-		long y = 0, x = 1;
-		
-		long q, t;
-		while(a>1) {
-			q = a/m;
-			t = m;
-			m = a%m;
-			a=t;
-			t=y;
-			
-			y = x-q*y;
-			x=t;
-		}
-		if(x<0) x += MOD;
-		
-		return x;
 	}
 }
