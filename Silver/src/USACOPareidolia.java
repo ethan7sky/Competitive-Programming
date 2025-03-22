@@ -33,20 +33,25 @@ public class USACOPareidolia {
 				}
 			}
 			if(found[6]!=0) {
-				s.add(found[6]-1);
+				s.add(found[6]);
 				e.add(i);
 				found[0]+=found[6];
 				found[6]=0;
 			}
+			
+			System.out.println(Arrays.toString(found));
 		}
 		
 		if(s.size()!=e.size()) s.removeLast();
+
+		System.out.println(s);
+		System.out.println(e);
 		
 		cnt = s.size();
 			
 		long ans = 0L;
 		for(int i=0; i<cnt; i++){
-			long l = s.get(i)+1;
+			long l = s.get(i);
 			long r = len-e.get(i);
 			ans += l*r;
 		}

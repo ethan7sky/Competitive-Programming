@@ -1,4 +1,6 @@
-mildredree
+4
+4 2 7 1
+
 
 
 #ifndef ONLINE_JUDGE 
