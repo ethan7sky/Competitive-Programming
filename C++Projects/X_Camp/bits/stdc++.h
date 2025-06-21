@@ -31,7 +31,7 @@
 #include <valarray>
 #include <vector>
 
-#if __cplusplus >= 201103L
+// #if __cplusplus >= 201103L
 #include <array>
 #include <atomic>
 #include <chrono>
@@ -51,7 +51,7 @@
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
-#endif
+// #endif
 
 
 /*#include <iostream>     // Input/output stream objects
