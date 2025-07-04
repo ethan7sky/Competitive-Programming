@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas with Chat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        
+        #canvas-container {
+            position: relative;
+        }
+        
+        #main-canvas {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        #chat-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        #chat-dialog {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        #chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        #chat-input-container {
+            display: flex;
+        }
+        
+        #chat-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        #send-button {
+            margin-left: 10px;
+            padding: 8px 15px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #close-chat-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #FF0000;
+        }
+        #close-chat-botton:hover {
+            color: #000;
+        }
+        
+        .message {
+            margin-bottom: 8px;
+            padding: 8px;
+            border-radius: 4px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: auto;
+        }
+        
+        .bot-message {
+            background-color: #f1f1f1;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="main-canvas" width="800" height="600"></canvas>
+        <button id="chat-button">Chat</button>
+        
+        <div id="chat-dialog">
+            <button id="close-chat-button">×</button>
+            <div id="chat-messages"></div>
+            <div id="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Type your message...">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('main-canvas');
+            const ctx = canvas.getContext('2d');
+            const chatButton = document.getElementById('chat-button');
+            const chatDialog = document.getElementById('chat-dialog');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+            const closeChatButton = document.getElementById('close-chat-button');
+            
+            closeChatButton.addEventListener('click', function() {
+                chatDialog.style.display = 'none';
+            });
+
+
+            // Draw something on the canvas
+            ctx.fillStyle = '#f8f8f8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#333';
+            ctx.font = '20px Arial';
+            ctx.fillText('Main Canvas Area', 20, 40);
+
+            let mouseIsDown = false;
+            let points = [];
+            let rect;
+            canvas.addEventListener("mousedown", (e) => {
+                rect = canvas.getBoundingClientRect();
+                //rect.top = how far it is from the top of the page
+                //rect.left = how far it is from the left of the page
+                // e.client = what is the x coordinate of what you clicked
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                mouseIsDown = true;
+                points.push([x, y]);
+            });
+            canvas.addEventListener("mouseup", (e) => {
+                mouseIsDown = false;
+            });
+            canvas.addEventListener("mousemove", (e) => {
+                if (mouseIsDown) {
+                    let lastPoint = points[points.length-1];
+                    let currentPoint = [e.clientX - rect.left, e.clientY - rect.top];
+                    ctx.beginPath();
+                    ctx.moveTo(lastPoint[0], lastPoint[1]);
+                    ctx.lineTo(currentPoint[0], currentPoint[1]);
+                    ctx.stroke();
+                    points.push(currentPoint);
+                }
+            });
+
+            document.getElementById("save").addEventListener("click", () => {
+                fetch("/savePicture", {
+                    method: "POST",
+                    headers: new Headers({
+                        "Content-Type": "application/json"
+                    }),
+                    body: JSON.stringify({
+                        points: points
+                    })
+                }).then((response) => {
+                    return response.json();
+                }).then((json) => {
+                    console.log(json);
+                });
+            });
+
+            document.getElementById("load").addEventListener("click", async () => {
+                let req = await fetch("/savePicture", {
+                    method: "POST",
+                    headers: new Headers({
+                        "Content-Type": "application/json"
+                    }),
+                    body: JSON.stringify({
+                        points: points
+                    })
+                });
+                let response = await req.json();
+                
+                ctx.fillStyle = '#f8f8f8';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                let points = response.points;
+
+                //draw the saved points
+                ctx.beginPath();
+                ctx.moveTo(points[0][0], points[0][1]);
+                for(let i=1; i<points.length; i++) {
+                    ctx.lineTo(points[i][0], points[i][1]);
+                }
+                ctx.stroke();
+                
+            });
+            
+            // Toggle chat dialog
+            chatButton.addEventListener('click', function() {
+                chatDialog.style.display = chatDialog.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            // Handle sending messages
+            function sendMessage() {
+                const messageText = chatInput.value.trim();
+                if (messageText) {
+                    // Add user message
+                    addMessage(messageText, 'user');
+                    chatInput.value = '';
+                    
+                    // Here you would typically call some API to get a response
+                    // For now, we'll just simulate a response after a delay
+                    setTimeout(() => {
+                        // This is a stub - replace with actual response generation logic
+                        const responses = [
+                            "Thanks for your message!",
+                            "I'm a simple chat bot.",
+                            "How can I help you today?",
+                            "That's interesting!",
+                            "I'm just a demo chat interface."
+                        ];
+                        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                        addMessage(randomResponse, 'bot');
+                    }, 500);
+                }
+            }
+            
+            sendButton.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', sender + '-message');
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Add a welcome message
+            addMessage("Hello! How can I help you today?", 'bot');
+        });
+    </script>
+</body>
+</html>
